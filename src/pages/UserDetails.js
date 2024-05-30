@@ -1,65 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AddPost, deletePost, editPost, fetchPosts } from '../redux/action/Action';
-import { Button, Card, CardActions, CardContent, CardHeader, Typography, Grid } from '@mui/material';
-import CreatePost from './CreatePost';
-// import EditPost from './EditPost';
-const Post = () => {
+import { fetchAlbumsByUsers, fetchTodosByUsers, fetchUsers } from '../redux/action/Action';
+import { Card, CardContent, Typography, Grid, List, ListItem } from '@mui/material';
+
+const UserDetails = () => {
   const dispatch = useDispatch();
-  const posts = useSelector(state => state.posts);
+  const users = useSelector(state => state.users);
+  const albums = useSelector(state => state.albums);
+  const todos = useSelector(state => state.todos);
   const loading = useSelector(state => state.loading);
   const error = useSelector(state => state.error);
-  const [openModal, setOpenModal] = useState(false);
+
   useEffect(() => {
-    dispatch(fetchPosts());
+    dispatch(fetchUsers());
   }, [dispatch]);
+
+  const handleUserClick = (id) => {
+    dispatch(fetchAlbumsByUsers(id));
+    dispatch(fetchTodosByUsers(id));
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
+
   if (error) {
     return <div>Error: {error}</div>;
   }
-  const openEditModal = () => {
-    setOpenModal(true);
-  };
-  const handleEdit = () => {
-    setOpenModal(true);
-  };
 
-  const handleDelete = () => {
-    dispatch(deletePost(posts.id));
-  }
   return (
     <div>
-      <Card sx={{ height: 50, display: 'flex', justifyContent: 'flex-end' }}>
-        <Button onClick={openEditModal}>
-          Create Post
-        </Button>
-      </Card>
       <Grid container spacing={2} justifyContent="center">
-        {posts && posts.map(post => (
-          <Grid item xs={12} sm={6} md={3} key={post.id}>
-            <Card sx={{ maxWidth: 500, minHeight: '50vh',height: '290px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', margin: 3 }}>
-              {/* <CardHeader title="Posts" /> */}
+        {users.map(user => (
+          <Grid item xs={12} sm={6} md={4} key={user.id} onClick={() => handleUserClick(user.id)}>
+            <Card sx={{ maxWidth: 500, minHeight: '20vh', height: '290px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', margin: 3 }}>
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography gutterBottom variant="h5" component="div">
-                  {post.title}
+                  {user.name}
                 </Typography>
                 <Typography gutterBottom component="div">
-                  {post.body}
+                  {user.email}
+                </Typography>
+                <Typography gutterBottom component="div">
+                  {user.phone}
+                </Typography>
+                <Typography gutterBottom component="div">
+                  {user.username}
+                </Typography>
+                <Typography gutterBottom component="div">
+                  {user.website}
                 </Typography>
               </CardContent>
-              <CardActions>
-                <Button size="small" variant='outlined' onClick={handleEdit}>Edit</Button>
-                <Button size="small" variant='outlined' onClick={()=> handleDelete(post.id)}>Delete</Button>
-              </CardActions>
             </Card>
           </Grid>
         ))}
+      <div>
+        <h2>Albums</h2>
+        <List>
+          {albums && albums.map(album => (
+            <Typography key={album.id}>{album.title}</Typography>
+          ))}
+        </List>
+        <h2>Todos</h2>
+        <List>
+          {todos && todos.map(todo => (
+            <ListItem key={todo.id}>{todo.title}</ListItem>
+          ))}
+        </List>
+      </div>
       </Grid>
-      <CreatePost open={openModal} onClose={() => setOpenModal(false)} />
-      {/* <EditPost open={openModal} onClose={() => setOpenModal(false)} /> */}
     </div>
   );
 };
-export default Post;
+
+export default UserDetails;

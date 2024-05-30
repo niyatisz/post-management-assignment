@@ -5,10 +5,18 @@ import {
     FETCH_POSTS_FAILURE,
     ADD_POST,
     EDIT_POST,
-    DELETE_POST
+    DELETE_POST,
+    FETCH_USER_REQUEST,
+    FETCH_USER_SUCCESS,
+    FETCH_USER_FAILURE,
+    FETCH_ALBUMS_BY_USERS,
+    FETCH_TODO_BY_USERS
   } from '../action/Action';
   const initialState = {
     posts: [],
+    users: [],
+    albums: [],
+    todo: [],
     loading: false,
     error: null
   };
@@ -66,6 +74,33 @@ import {
         ...state,
         posts: state.posts.filter(post => post.id !== action.payload)
       };
+      case FETCH_USER_REQUEST : 
+        return {
+          ...state,
+          loading: true
+        }
+        case FETCH_USER_SUCCESS :
+        return {
+          ...state,
+          loading: false,
+          users: action.payload
+        }
+        case FETCH_USER_FAILURE :
+        return {
+          ...state,
+          loading: false,
+          error: action.payload
+        }
+        case FETCH_ALBUMS_BY_USERS :
+        return {
+          ...state,
+          users: action.payload
+        }
+        case FETCH_TODO_BY_USERS :
+        return {
+          ...state,
+          users: action.payload,
+        }
       default:
         return state;
     }
