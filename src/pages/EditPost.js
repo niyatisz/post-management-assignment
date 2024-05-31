@@ -1,61 +1,57 @@
-// import React, { useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { editPost } from '../redux/action/Action';
-// import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, TextField } from '@mui/material';
-// import CloseIcon from '@mui/icons-material/Close';
+import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { editPost } from '../redux/action/Action';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, TextField } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
-// const EditPost = ({ open, onClose }) => {
-//     const dispatch = useDispatch();
-//     const posts = useSelector(state => state.posts);
-//     console.log('posts: ', posts);
-//     const [data, setData] = useState(posts);
-//     console.log('data: ', data);
+const EditPost = ({ open, onClose, post }) => {
+  const dispatch = useDispatch();
+  const [formData, setFormData] = useState({ title: post.title, body: post.body });
 
-//     const handleEditPost = (userId) => {
-//         const user = data.find(user => user.id === userId);
-//         dispatch(editPost(data.title,data.body));
-//         onClose();
-//     };
-//     const openEditModal = (userId) => {
-//         // const user = data.find(user => user.id === userId);
-//         // setData(user);
-//       };
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setFormData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
 
-//       const handleInputChange = (event, key) => {
-//         const { value } = event.target;
-//         setData(prevUser => ({
-//             ...prevUser,
-//             [key]: value
-//         }));
-//     };
+  const handleEditPost = () => {
+    dispatch(editPost(post.id, formData.title, formData.body));
+    onClose();
+  };
 
-//     return (
-//         <Dialog open={open} onClose={onClose}>
-//             <DialogTitle>
-//                 Edit POST
-//                 <IconButton onClick={onClose} sx={{ position: 'absolute', top: '8px', right: '8px' }}>
-//                     <CloseIcon />
-//                 </IconButton>
-//             </DialogTitle>
-//             <Divider />
-//             <DialogContent>
-//                 <form>
-//                     <label htmlFor='title'>Title</label>
-//                     <TextField fullWidth id="title" name='title' value={data.title} onChange={handleInputChange} />
-//                     <label htmlFor='body'>Body</label>
-//                     <TextField fullWidth id="body" name='body' onChange={handleInputChange} />
-//                     <DialogActions>
-//                         <Button variant="outlined" onClick={onClose}>
-//                             Cancel
-//                         </Button>
-//                         <Button variant="contained" onClick={handleEditPost}>
-//                             Ok
-//                         </Button>
-//                     </DialogActions>
-//                 </form>
-//             </DialogContent>
-//         </Dialog>
-//     );
-// };
+  useEffect(() => {
+    setFormData({ title: post.title, body: post.body }); // Reset form data when post changes
+  }, [post]);
 
-// export default EditPost;
+  return (
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>
+        Edit POST
+        <IconButton onClick={onClose} sx={{ position: 'absolute', top: '8px', right: '8px' }}>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <Divider />
+      <DialogContent>
+        <form>
+          <label htmlFor='title'>Title</label>
+          <TextField fullWidth id="title" name='title' value={formData.title} onChange={handleInputChange} />
+          <label htmlFor='body'>Body</label>
+          <TextField fullWidth id="body" name='body' value={formData.body} onChange={handleInputChange} />
+          <DialogActions>
+            <Button variant="outlined" onClick={onClose}>
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={handleEditPost}>
+              Ok
+            </Button>
+          </DialogActions>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
+export default EditPost;

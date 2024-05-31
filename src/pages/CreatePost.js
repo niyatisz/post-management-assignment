@@ -46,6 +46,7 @@ const CreatePost = ({ open, onClose }) => {
                             Cancel
                         </Button>
                         <Button variant="contained" onClick={handleCreatePost}>
+                        
                             Ok
                         </Button>
                     </DialogActions>
