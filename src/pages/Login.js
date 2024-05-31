@@ -1,29 +1,25 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-
+import CryptoJS from 'crypto-js';
 const LoginForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
-  const setUser = useContext(AuthContext);
-
   const onSubmit = (data) => {
-    const existingUsers = JSON.parse(localStorage.getItem('users'))
-    const user = existingUsers.find(user => user.email === data.email && user.password === data.password);
-
-
+    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
+    const user = existingUsers.find(user => {
+      const decryptedPassword = CryptoJS.AES.decrypt(user.password, 'niyti@124').toString(CryptoJS.enc.Utf8);
+      return user.email === data.email && decryptedPassword === data.password;
+    });
     if (user) {
       alert('Login successful!');
-      localStorage.setItem('isLoggedIn', true)
-      navigate('/post-details')
-      setUser(user);
+      localStorage.setItem('isLoggedIn', true);
+      navigate('/post-details');
     } else {
       alert('Invalid email or password.');
     }
   };
-
   return (
     <Box
       sx={{
@@ -64,5 +60,4 @@ const LoginForm = () => {
     </Box>
   );
 };
-
 export default LoginForm;

@@ -1,28 +1,23 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { AuthContext } from '../context/AuthContext';
-
+import CryptoJS from 'crypto-js';
 const Signup = () => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
-
   const onSubmit = (data) => {
     const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
     const isDuplicate = existingUsers.some(user => user.email === data.email);
-    
-
     if (isDuplicate) {
       alert('User with this email already exists.');
     } else {
+      data.password = CryptoJS.AES.encrypt(data.password, 'niyti@124').toString();
       existingUsers.push(data);
       localStorage.setItem('users', JSON.stringify(existingUsers));
       alert('User registered successfully!');
     }
   };
-
   const password = watch('password', '');
   const confirmPassword = watch('confirmPassword', '');
-
   return (
     <Box
       sx={{
@@ -100,5 +95,4 @@ const Signup = () => {
     </Box>
   );
 };
-
 export default Signup;

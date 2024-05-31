@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 const Todos = ({ open, onClose, userId }) => {
     const userTodos = useSelector((state) => state.todo);
-    console.log(userTodos)
     const loading = useSelector((state) => state.loading);
     const error = useSelector((state) => state.error);
 

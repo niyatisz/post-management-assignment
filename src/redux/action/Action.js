@@ -1,23 +1,9 @@
 
 import axios from 'axios';
-export const FETCH_POSTS_REQUEST = 'FETCH_POSTS_REQUEST';
-export const FETCH_POSTS_SUCCESS = 'FETCH_POSTS_SUCCESS';
-export const FETCH_POSTS_FAILURE = 'FETCH_POSTS_FAILURE';
-export const FETCH_USER_REQUEST = 'FETCH_USER_REQUEST';
-export const FETCH_USER_SUCCESS = 'FETCH_USER_SUCCESS';
-export const FETCH_USER_FAILURE = 'FETCH_USER_FAILURE';
-export const ADD_POST = 'ADD_POST';
-export const EDIT_POST = 'EDIT_POST';
-export const DELETE_POST = 'DELETE_POST';
-
-export const FETCH_ALBUMS_BY_USERS = 'FETCH_ALBUMS_BY_USERS';
-export const FETCH_ALBUMS_BY_USERS_SUCCESS = 'FETCH_ALBUMS_BY_USERS_SUCCESS';
-export const FETCH_ALBUMS_BY_USERS_FAILURE = 'FETCH_ALBUMS_BY_USERS_FAILURE';
-export const FETCH_TODO_BY_USERS = 'FETCH_TODO_BY_USERS';
-export const FETCH_TODO_BY_USERS_SUCCESS = 'FETCH_TODO_BY_USERS_SUCCESS';
-export const FETCH_TODO_BY_USERS_FAILURE = 'FETCH_TODO_BY_USERS_FAILURE';
+import { ADD_POST, DELETE_POST, EDIT_POST, FETCH_ALBUMS_BY_USERS, FETCH_ALBUMS_BY_USERS_FAILURE, FETCH_ALBUMS_BY_USERS_SUCCESS, FETCH_COMMENTS_FAILURE, FETCH_COMMENTS_REQUEST, FETCH_COMMENTS_SUCCESS, FETCH_POSTS_FAILURE, FETCH_POSTS_REQUEST, FETCH_POSTS_SUCCESS, FETCH_TODO_BY_USERS, FETCH_TODO_BY_USERS_FAILURE, FETCH_TODO_BY_USERS_SUCCESS, FETCH_USER_FAILURE, FETCH_USER_REQUEST, FETCH_USER_SUCCESS, } from '../../constant/ActionType';
 
 
+/* POSTS CRUD OPERATION */
 export const fetchPostsRequest = () => ({
   type: FETCH_POSTS_REQUEST
 });
@@ -29,39 +15,6 @@ export const fetchPostsFailure = (error) => ({
   type: FETCH_POSTS_FAILURE,
   payload: error
 });
-
-export const fetchUsersRequest = () => ({
-  type: FETCH_POSTS_REQUEST
-});
-export const fetchUsersSuccess = (users) => ({
-  type: FETCH_USER_SUCCESS,
-  payload : users
-})
-export const fetchUsersFailure = (error) => ({
-  type: FETCH_POSTS_FAILURE,
-  payload: error
-});
-
-export const fetchAlbumSuccess = (albums) =>({
-  type: FETCH_ALBUMS_BY_USERS_SUCCESS,
-  payload: albums
-})
-export const fetchAlbumFailure = (error) =>({
-  type: FETCH_ALBUMS_BY_USERS_FAILURE,
-  payload: error
-  });
-
-  export const fetchTodoSuccess = (todo) => ({
-    type: FETCH_TODO_BY_USERS_SUCCESS,
-    payload: todo
-  });
-
-  export const fetchTodoFailure = (error) =>({
-    type: FETCH_TODO_BY_USERS_FAILURE,
-    payload: error
-    });
-
-
 export const AddPost = (title, body) => ({
   type: ADD_POST,
   payload: {
@@ -77,74 +30,47 @@ export const editPost = (id, title, body) => ({
     body
   }
 });
-
 export const deletePost = (id) => ({
   type: DELETE_POST,
   payload: id
 });
 
+/* USER LISTING AND ITS ALBUMS AND TODOS VIEW */
+export const fetchUsersRequest = () => ({
+  type: FETCH_USER_REQUEST
+});
+export const fetchUsersSuccess = (users) => ({
+  type: FETCH_USER_SUCCESS,
+  payload: users
+})
+export const fetchUsersFailure = (error) => ({
+  type: FETCH_USER_FAILURE,
+  payload: error
+});
 export const fetchAlbums = () => ({
   type: FETCH_ALBUMS_BY_USERS
+});
+export const fetchAlbumSuccess = (albums) => ({
+  type: FETCH_ALBUMS_BY_USERS_SUCCESS,
+  payload: albums
+})
+export const fetchAlbumFailure = (error) => ({
+  type: FETCH_ALBUMS_BY_USERS_FAILURE,
+  payload: error
 });
 
 export const fetchTodo = () => ({
   type: FETCH_TODO_BY_USERS
 });
+export const fetchTodoSuccess = (todo) => ({
+  type: FETCH_TODO_BY_USERS_SUCCESS,
+  payload: todo
+});
 
-
-export const fetchPosts = () => {
-  return async (dispatch) => {
-    dispatch(fetchPostsRequest());
-    try {
-      const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-
-      dispatch(fetchPostsSuccess(response.data));
-    } catch (error) {
-      dispatch(fetchPostsFailure(error.message));
-    }
-  };
-};
-
-export const fetchUsers = () => {
-  return async (dispatch) => {
-    try {
-      const response = await axios.get('https://jsonplaceholder.typicode.com/users');
-      dispatch(fetchUsersSuccess(response.data));
-    } catch (error) {
-      dispatch(fetchUsersFailure(error.message));
-    }
-  };
-}
-
-export const fetchAlbumsByUsers = (id) => {
-  return async (dispatch) => {
-    dispatch(fetchAlbums())
-    try {
-      const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}/albums`);
-      dispatch(fetchAlbumSuccess(response.data));
-    } catch (error) {
-      dispatch(fetchAlbumFailure(error.message));
-    }
-  };
-}
-
-export const fetchTodosByUsers = (id) => {
-  return async (dispatch) => {
-    dispatch(fetchTodo())
-    try {
-      const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}/todos`);
-      dispatch(fetchTodoSuccess(response.data));
-    } catch (error) {
-      dispatch(fetchTodoFailure(error.message));
-    }
-  };
-}
-
-
-export const FETCH_COMMENTS_REQUEST = 'FETCH_COMMENTS_REQUEST';
-export const FETCH_COMMENTS_SUCCESS = 'FETCH_COMMENTS_SUCCESS';
-export const FETCH_COMMENTS_FAILURE = 'FETCH_COMMENTS_FAILURE';
-
+export const fetchTodoFailure = (error) => ({
+  type: FETCH_TODO_BY_USERS_FAILURE,
+  payload: error
+});
 export const fetchCommentsRequest = () => ({
   type: FETCH_COMMENTS_REQUEST
 });
@@ -158,6 +84,54 @@ export const fetchCommentsFailure = (error) => ({
   type: FETCH_COMMENTS_FAILURE,
   payload: error
 });
+
+
+/* API CALLING */
+export const fetchPosts = () => {
+  return async (dispatch) => {
+    dispatch(fetchPostsRequest());
+    try {
+      const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
+
+      dispatch(fetchPostsSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchPostsFailure(error.message));
+    }
+  };
+};
+export const fetchUsers = () => {
+  return async (dispatch) => {
+    dispatch(fetchUsersRequest());
+    try {
+      const response = await axios.get('https://jsonplaceholder.typicode.com/users');
+      dispatch(fetchUsersSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchUsersFailure(error.message));
+    }
+  };
+}
+export const fetchAlbumsByUsers = (id) => {
+  return async (dispatch) => {
+    dispatch(fetchAlbums())
+    try {
+      const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}/albums`);
+      dispatch(fetchAlbumSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchAlbumFailure(error.message));
+    }
+  };
+}
+export const fetchTodosByUsers = (id) => {
+  return async (dispatch) => {
+    dispatch(fetchTodo())
+    try {
+      const response = await axios.get(`https://jsonplaceholder.typicode.com/users/${id}/todos`);
+      dispatch(fetchTodoSuccess(response.data));
+    } catch (error) {
+      dispatch(fetchTodoFailure(error.message));
+    }
+  };
+}
 
 export const fetchComments = (userId) => {
   return async (dispatch) => {

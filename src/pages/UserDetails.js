@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAlbumsByUsers, fetchTodosByUsers, fetchUsers } from '../redux/action/Action';
 import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
 import Albums from './Albums';
-import Todos from './Todo'; // Import the Todos component
+import Todos from './Todo'; 
 
 const UserDetails = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const UserDetails = () => {
   const error = useSelector(state => state.error);
   const [selectedUser, setSelectedUser] = useState(null);
   const [openAlbums, setOpenAlbums] = useState(false);
-  const [openTodos, setOpenTodos] = useState(false); // State to control the visibility of the Todos dialog
+  const [openTodos, setOpenTodos] = useState(false); 
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -68,13 +68,13 @@ const UserDetails = () => {
                 </Typography>
               </CardContent>
               <Button size="small" variant='outlined' onClick={handleOpenAlbums}>Albums</Button>
-              <Button size="small" variant='outlined' onClick={handleOpenTodos}>Todos</Button> {/* Add onClick event for Todos button */}
+              <Button size="small" variant='outlined' onClick={handleOpenTodos}>Todos</Button>
             </Card>
           </Grid>
         ))}
       </Grid>
       <Albums open={openAlbums} onClose={() => setOpenAlbums(false)} userId={selectedUser} />
-      <Todos open={openTodos} onClose={() => setOpenTodos(false)} userId={selectedUser} /> {/* Pass userId to Todos component */}
+      <Todos open={openTodos} onClose={() => setOpenTodos(false)} userId={selectedUser} /> 
     </div>
   );
 };

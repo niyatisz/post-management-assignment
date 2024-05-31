@@ -22,7 +22,7 @@ const EditPost = ({ open, onClose, post }) => {
   };
 
   useEffect(() => {
-    setFormData({ title: post.title, body: post.body }); // Reset form data when post changes
+    setFormData({ title: post.title, body: post.body }); 
   }, [post]);
 
   return (

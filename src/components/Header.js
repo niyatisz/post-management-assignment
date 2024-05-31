@@ -6,10 +6,10 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from "@mui/material";
 import { AuthContext, useAuth } from "../context/AuthContext"; // Adjust the path as necessary
+import { useContext } from "react";
 
 export default function Header() {
-  const {user, setUser} = React.useContext(AuthContext)
-  console.log('user: ', user);
+  const {user, setUser} = useContext(AuthContext)
   const isLoggedIn = localStorage.getItem('isLoggedIn')
   const handleLogout = () => {
     localStorage.clear('')

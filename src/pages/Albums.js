@@ -8,7 +8,7 @@ const Albums = ({ open, onClose, userId }) => {
     const loading = useSelector((state) => state.loading);
     const error = useSelector((state) => state.error);
 
-    const filteredComments = userAlbums && userAlbums.filter(album => album.userId === userId);
+    const albums = userAlbums && userAlbums.filter(album => album.userId === userId);
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -19,9 +19,9 @@ const Albums = ({ open, onClose, userId }) => {
         ) : error ? (
           <Typography>Error: {error}</Typography>
         ) : (
-            filteredComments && filteredComments.map(comment => (
-            <div key={comment.id}>
-              <List variant="h5">{comment.title}</List>
+            albums && albums.map(album => (
+            <div key={album.id}>
+              <List variant="h5">{album.title}</List>
             </div>
           ))
         )}

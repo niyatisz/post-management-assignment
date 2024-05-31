@@ -59,14 +59,14 @@ const Post = () => {
               <CardActions>
                 <Button size="small" variant='outlined' onClick={() => openEditModal(post)}> <ModeEditIcon /></Button>
                 <Button size="small" variant='outlined' onClick={() => handleDelete(post.id)}><DeleteIcon /></Button>
-                <Button size="small" variant='outlined' onClick={() => handleComments(post.userId)}><CommentIcon /></Button> {/* Update onClick */}
+                <Button size="small" variant='outlined' onClick={() => handleComments(post.userId)}><CommentIcon /></Button> 
               </CardActions>
             </Card>
           </Grid>
         ))}
       </Grid>
       <CreatePost open={openModal} onClose={() => setOpenModal(false)} />
-      <Comments open={openComments} comments={comments} onClose={() => setOpenComments(false)} /> {/* Render CommentsModal */}
+      <Comments open={openComments} comments={comments} onClose={() => setOpenComments(false)} /> 
       {selectedPost && <EditPost open={openModal} onClose={() => setOpenModal(false)} post={selectedPost} />}
     </div>
   );
