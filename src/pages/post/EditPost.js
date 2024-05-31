@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { editPost } from '../redux/action/Action';
+import { editPost } from '../../redux/action/Action';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, IconButton, TextField } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -41,10 +41,10 @@ const EditPost = ({ open, onClose, post }) => {
           <label htmlFor='body'>Body</label>
           <TextField fullWidth id="body" name='body' value={formData.body} onChange={handleInputChange} />
           <DialogActions>
-            <Button variant="outlined" onClick={onClose}>
+            <Button variant="outlined" color='secondary' onClick={onClose}>
               Cancel
             </Button>
-            <Button variant="contained" onClick={handleEditPost}>
+            <Button variant="contained"  color='secondary' onClick={handleEditPost}>
               Ok
             </Button>
           </DialogActions>

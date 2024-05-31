@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAlbumsByUsers, fetchTodosByUsers, fetchUsers } from '../redux/action/Action';
-import { Card, CardContent, Typography, Grid, Button } from '@mui/material';
+import { fetchAlbumsByUsers, fetchTodosByUsers, fetchUsers } from '../../redux/action/Action';
+import { Card, CardContent, Typography, Grid, Button, CardActions } from '@mui/material';
 import Albums from './Albums';
 import Todos from './Todo'; 
 
@@ -21,7 +21,7 @@ const UserDetails = () => {
   const handleUserClick = (id) => {
     setSelectedUser(id);
     dispatch(fetchAlbumsByUsers(id));
-    dispatch(fetchTodosByUsers(selectedUser));
+    dispatch(fetchTodosByUsers(id));
   };
 
   const handleOpenAlbums = () => {
@@ -45,7 +45,7 @@ const UserDetails = () => {
     <div>
       <Grid container spacing={2} justifyContent="center">
         {users.map(user => (
-          <Grid item xs={12} sm={6} md={4} key={user.id}>
+          <Grid item xs={12} sm={6} md={3} key={user.id}>
             <Card
               sx={{ maxWidth: 500, minHeight: '20vh', height: '290px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', margin: 3 }}
               onClick={() => handleUserClick(user.id)}
@@ -67,8 +67,10 @@ const UserDetails = () => {
                   {user.website}
                 </Typography>
               </CardContent>
-              <Button size="small" variant='outlined' onClick={handleOpenAlbums}>Albums</Button>
-              <Button size="small" variant='outlined' onClick={handleOpenTodos}>Todos</Button>
+              <CardActions>
+              <Button size="small" variant='contained' color='secondary' onClick={handleOpenAlbums}>Albums</Button>
+              <Button size="small" variant='contained' color='secondary' onClick={handleOpenTodos}>Todos</Button>
+              </CardActions>
             </Card>
           </Grid>
         ))}

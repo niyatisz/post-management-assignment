@@ -1,23 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import CryptoJS from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+
 const Signup = () => {
   const { register, handleSubmit, formState: { errors }, watch } = useForm();
-  const onSubmit = (data) => {
-    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const isDuplicate = existingUsers.some(user => user.email === data.email);
-    if (isDuplicate) {
-      alert('User with this email already exists.');
-    } else {
-      data.password = CryptoJS.AES.encrypt(data.password, 'niyti@124').toString();
-      existingUsers.push(data);
-      localStorage.setItem('users', JSON.stringify(existingUsers));
-      alert('User registered successfully!');
+  const { signup } = useAuth();
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn) {
+      navigate('/post-details');
     }
+  }, [navigate]); 
+
+  const onSubmit = (data) => {
+    signup(data);
+    navigate('/');
   };
   const password = watch('password', '');
-  const confirmPassword = watch('confirmPassword', '');
   return (
     <Box
       sx={{

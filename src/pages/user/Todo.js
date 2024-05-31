@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, List, Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { Dialog, DialogContent, DialogTitle, Divider, IconButton, List, Typography } from '@mui/material';
+import { useSelector } from 'react-redux';
+import CloseIcon from '@mui/icons-material/Close';
 
 const Todos = ({ open, onClose, userId }) => {
     const userTodos = useSelector((state) => state.todo);
@@ -11,7 +12,13 @@ const Todos = ({ open, onClose, userId }) => {
 
     return (
         <Dialog open={open} onClose={onClose}>
-            <DialogTitle>Todo</DialogTitle>
+            <DialogTitle>
+                Todo
+                <IconButton onClick={onClose} sx={{ position: 'absolute', top: '8px', right: '8px' }}>
+                    <CloseIcon />
+                </IconButton>
+            </DialogTitle>
+            <Divider />
             <DialogContent>
                 {loading ? (
                     <Typography>Loading todos...</Typography>
@@ -20,15 +27,12 @@ const Todos = ({ open, onClose, userId }) => {
                 ) : (
                     filteredTodos && filteredTodos.map(todo => (
                         <div key={todo.id}>
-                            <List variant="h5">{todo.title}</List>
-                            <Typography variant="body2">{todo.completed ? 'Completed' : 'Not Completed'}</Typography>
+                             <List variant="h5">{todo.title}</List>
+                            <Typography variant="body2" color='secondary'>{todo.completed ? 'Completed' : 'Not Completed'}</Typography>
                         </div>
                     ))
                 )}
             </DialogContent>
-            <DialogActions>
-                <Button onClick={onClose}>Close</Button>
-            </DialogActions>
         </Dialog>
     );
 }

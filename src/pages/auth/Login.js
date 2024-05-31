@@ -1,24 +1,23 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import CryptoJS from 'crypto-js';
+import { useAuth } from "../../context/AuthContext";
 const LoginForm = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
+  const { login } = useAuth();
   const navigate = useNavigate();
-  const onSubmit = (data) => {
-    const existingUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const user = existingUsers.find(user => {
-      const decryptedPassword = CryptoJS.AES.decrypt(user.password, 'niyti@124').toString(CryptoJS.enc.Utf8);
-      return user.email === data.email && decryptedPassword === data.password;
-    });
-    if (user) {
-      alert('Login successful!');
-      localStorage.setItem('isLoggedIn', true);
+
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    if (isLoggedIn) {
       navigate('/post-details');
-    } else {
-      alert('Invalid email or password.');
     }
+  }, [navigate]); 
+
+  const onSubmit = (data) => {
+    login(data);
+    navigate('/post-details');
   };
   return (
     <Box

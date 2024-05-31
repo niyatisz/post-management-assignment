@@ -5,16 +5,16 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { Link } from "@mui/material";
-import { AuthContext, useAuth } from "../context/AuthContext"; // Adjust the path as necessary
-import { useContext } from "react";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const {user, setUser} = useContext(AuthContext)
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const isLoggedIn = localStorage.getItem('isLoggedIn')
   const handleLogout = () => {
-    localStorage.clear('')
-    setUser('');
-    
+    logout();
+    navigate('/');
   };
 
   return (
